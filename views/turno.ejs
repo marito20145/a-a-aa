@@ -1,0 +1,47 @@
+<%- include('parciales/encabezado', { titulo: 'Turno' }) %>
+<section class="angosto">
+<% if (!turno) { %>
+  <img class="ilustracion-centro" src="/img/ilustraciones/cajon.svg" alt="" width="144" height="105">
+  <h1>Abrir turno</h1>
+  <p>Cuenta el dinero con el que empieza el cajón.</p>
+  <form method="post" action="/turno/abrir" class="formulario">
+    <label class="campo-grande">Efectivo inicial (S/) <input name="efectivo_inicial" inputmode="decimal" required autofocus autocomplete="off"></label>
+    <div class="montos solo-js" aria-label="Montos frecuentes">
+      <% ['50.00', '100.00', '150.00', '200.00'].forEach(function (m) { %>
+        <button type="button" class="rapido" data-llenar="efectivo_inicial" data-valor="<%= m %>">S/ <%= parseInt(m, 10) %></button>
+      <% }) %>
+    </div>
+    <button class="boton boton-grande"><%- ico('turno') %> Abrir turno</button>
+  </form>
+<% } else if (propio || usuario.rol === 'admin') { %>
+  <div class="cabecera">
+    <div>
+      <h1><span class="titulo-ico"><%- ico('turno') %></span> Turno abierto</h1>
+      <p class="cabecera-sub"><%= turno.cajero %> · desde <%= turno.abierto_en %></p>
+    </div>
+  </div>
+  <div class="cifras cifras-turno">
+    <div class="cifra cifra-principal"><span class="cifra-ico"><%- ico('efectivo') %></span><div><span>Vendido</span><strong><%= soles(resumen.totalVentas) %></strong></div></div>
+    <div class="cifra"><span class="cifra-ico"><%- ico('caja') %></span><div><span>Ventas</span><strong><%= resumen.ventas %></strong></div></div>
+  </div>
+  <% if (usuario.rol === 'admin' && resumen.porMedio.length) { %>
+    <dl class="datos">
+      <% resumen.porMedio.forEach(function (m) { %>
+        <dt><%= nombreMedio(m.medio) %></dt><dd><%= soles(m.total) %></dd>
+      <% }) %>
+    </dl>
+  <% } %>
+  <% if (propio) { %><p><a href="/caja" class="boton boton-grande"><%- ico('caja') %> Ir a la caja</a></p><% } %>
+  <h2><%- ico('candado') %> Cerrar turno</h2>
+  <p>Cuenta todo el efectivo del cajón, incluido el monto inicial. Al cerrar verás si cuadra.</p>
+  <form method="post" action="/turno/cerrar" class="formulario" data-confirmar="¿Cerrar el turno? Ya no podrás vender en él." data-confirmar-boton="Sí, cerrar turno">
+    <label class="campo-grande">Efectivo contado (S/) <input name="efectivo_contado" inputmode="decimal" required autocomplete="off"></label>
+    <button class="boton-secundario"><%- ico('candado') %> Cerrar turno</button>
+  </form>
+<% } else { %>
+  <img class="ilustracion-centro" src="/img/ilustraciones/cajon.svg" alt="" width="144" height="105">
+  <h1>Caja ocupada</h1>
+  <p>El turno de <%= turno.cajero %> sigue abierto desde <%= turno.abierto_en %>. Pide a esa persona o al administrador que lo cierre.</p>
+<% } %>
+</section>
+<%- include('parciales/pie') %>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title><%= locals.titulo ? titulo + ' | ' : '' %><%= config.negocio.nombre %></title>
+<link rel="stylesheet" href="/estilos.css">
+<script>document.documentElement.className += ' js';</script>
+</head>
+<body>
+<%- include('iconos') %>
+<% if (locals.usuario) {
+     const logo = fotoNegocio('logo');
+     const enlaces = [['/caja', 'Caja', 'caja'], ['/turno', 'Turno', 'turno']];
+     const admin = [['/productos', 'Productos', 'productos'], ['/inventario', 'Inventario', 'inventario'], ['/clientes', 'Clientes', 'clientes'], ['/comprobantes', 'Comprobantes', 'comprobantes'], ['/reportes', 'Reportes', 'reportes'], ['/usuarios', 'Usuarios', 'usuarios']];
+     const iniciales = usuario.nombre.split(/\s+/).map(function (p) { return p.charAt(0); }).join('').slice(0, 2).toUpperCase();
+     function enlace(e) { return '<a href="' + e[0] + '" title="' + e[1] + '"' + (locals.rutaActual && rutaActual.startsWith(e[0]) ? ' aria-current="page"' : '') + '>' + ico(e[2]) + '<span class="menu-texto">' + e[1] + '</span></a>'; } %>
+<div class="marco<%= locals.menuCompacto ? ' marco-compacto' : '' %>">
+<aside class="menu">
+  <a class="menu-marca" href="/caja">
+    <% if (logo) { %><img src="<%= logo %>" alt=""><% } else { %><span class="sello"><%- ico('caja') %></span><% } %>
+    <span class="menu-texto"><%= config.negocio.nombre %><small>Caja</small></span>
+  </a>
+  <nav aria-label="Secciones">
+    <% enlaces.forEach(function (e) { %><%- enlace(e) %><% }) %>
+    <% if (usuario.rol === 'admin') { %>
+      <p class="menu-seccion">Administración</p>
+      <% admin.forEach(function (e) { %><%- enlace(e) %><% }) %>
+    <% } %>
+  </nav>
+  <div class="menu-pie">
+    <span class="reloj" id="reloj"></span>
+    <div class="persona" title="<%= usuario.nombre %>">
+      <span class="avatar" aria-hidden="true"><%= iniciales %></span>
+      <span class="persona-datos"><strong><%= usuario.nombre %></strong><span><%= usuario.rol === 'admin' ? 'Administrador' : 'Cajero' %></span></span>
+    </div>
+    <form method="post" action="/salir" class="sesion">
+      <button class="boton-salir" title="Salir"><%- ico('salir') %><span class="menu-texto">Salir</span></button>
+    </form>
+  </div>
+</aside>
+<div class="contenido">
+<% } %>
+<main class="<%= locals.claseMain || '' %>">
+<% if (!locals.notasPropias) { %>
+<div class="avisos" id="avisos">
+<% if (locals.mensaje) { %><p class="nota nota-ok" role="status"><%- ico('check') %><span class="nota-texto"><%= mensaje %></span><button type="button" class="nota-cerrar" aria-label="Cerrar mensaje"><%- ico('cerrar') %></button></p><% } %>
+<% if (locals.aviso) { %><p class="nota nota-aviso" role="status"><%- ico('alerta') %><span class="nota-texto"><%= aviso %></span><button type="button" class="nota-cerrar" aria-label="Cerrar mensaje"><%- ico('cerrar') %></button></p><% } %>
+<% if (locals.error) { %><p class="nota nota-error" role="alert"><%- ico('alerta') %><span class="nota-texto"><%= error %></span><button type="button" class="nota-cerrar" aria-label="Cerrar mensaje"><%- ico('cerrar') %></button></p><% } %>
+</div>
+<% } %>

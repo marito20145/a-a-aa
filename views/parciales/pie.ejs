@@ -1,0 +1,7 @@
+</main>
+<% if (locals.usuario) { %></div></div><% } %>
+<script src="/js/app.js"></script>
+<% (locals.scripts || []).forEach(function (s) { %><script src="<%= s %>"></script>
+<% }) %>
+</body>
+</html>

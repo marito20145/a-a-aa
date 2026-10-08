@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 160">
+  <!-- Celebración: la caja cuadró -->
+  <ellipse cx="90" cy="150" rx="60" ry="6" fill="#18211f" opacity=".1"/>
+  <path d="M64 50a26 26 0 0 1 52 0" fill="none" stroke="#0a4f40" stroke-width="7" stroke-linecap="round"/>
+  <path d="M40 50h100l-8 92H48z" fill="#0f6b56"/>
+  <circle cx="90" cy="96" r="26" fill="#fffaf0"/>
+  <path d="m77 96 9 9 17-18" fill="none" stroke="#0f6b56" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="20" y="22" width="10" height="5" rx="1" fill="#ffcf3d" transform="rotate(-30 25 24)"/>
+  <rect x="150" y="30" width="10" height="5" rx="1" fill="#b5452f" transform="rotate(25 155 32)"/>
+  <rect x="140" y="80" width="9" height="5" rx="1" fill="#ffcf3d" transform="rotate(60 144 82)"/>
+  <rect x="22" y="84" width="9" height="5" rx="1" fill="#3f9b5a" transform="rotate(-60 26 86)"/>
+  <rect x="84" y="6" width="9" height="5" rx="1" fill="#b5452f" transform="rotate(15 88 8)"/>
+  <circle cx="46" cy="16" r="3.5" fill="#b5452f"/><circle cx="132" cy="12" r="3.5" fill="#3f9b5a"/>
+  <circle cx="160" cy="62" r="3" fill="#0f6b56"/><circle cx="14" cy="56" r="3" fill="#ffcf3d"/>
+</svg>

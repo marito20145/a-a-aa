@@ -1,0 +1,57 @@
+<%- include('parciales/encabezado', { titulo: 'Productos' }) %>
+<% const bajos = productos.filter(function (p) { return p.activo && p.stock <= p.stock_minimo; }).length; %>
+<header class="portada">
+  <div>
+    <p class="portada-ceja"><%- ico('productos') %> Catálogo</p>
+    <h1>Productos</h1>
+    <p class="portada-sub">Precios, códigos y stock de todo lo que vendes en la bodega.</p>
+    <div class="portada-acciones">
+      <a class="boton boton-oro" href="/productos/nuevo"><%- ico('mas') %> Nuevo producto</a>
+      <form method="get" action="/productos" class="buscador">
+        <input name="q" value="<%= q %>" placeholder="Buscar por nombre, código o PLU" aria-label="Buscar productos">
+        <button class="boton-secundario"><%- ico('buscar') %> Buscar</button>
+      </form>
+    </div>
+    <% if (productos.length) { %>
+      <div class="portada-acciones">
+        <span class="portada-dato"><span><%= q ? 'Encontrados' : 'Productos' %></span><strong><%= productos.length %></strong></span>
+        <span class="portada-dato<%= bajos ? ' bajo' : '' %>"><span>Con stock bajo</span><strong><%= bajos %></strong></span>
+      </div>
+    <% } %>
+  </div>
+  <img class="portada-img" src="/img/ilustraciones/portada-productos.svg" alt="" width="240" height="138">
+</header>
+<% if (productos.length === 0) { %>
+  <div class="vacio">
+    <img src="/img/ilustraciones/canasta-vacia.svg" alt="" width="136" height="102">
+    <strong><%= q ? 'Nada por aquí' : 'Aún no hay productos' %></strong>
+    <%= q ? 'Ningún producto coincide con la búsqueda.' : 'Registra el primero con "Nuevo producto".' %>
+  </div>
+<% } else { %>
+<div class="tabla-marco">
+<table class="tabla">
+  <thead><tr><th>Producto</th><th>Código / PLU</th><th class="num">Precio</th><th class="num">Stock</th><th>IGV</th><th><span class="oculto">Acciones</span></th></tr></thead>
+  <tbody>
+  <% productos.forEach(function (p) { %>
+    <tr class="<%= p.activo ? '' : 'inactivo' %>">
+      <td><span class="con-miniatura"><img class="miniatura" src="<%= imagenProducto(p) %>" alt="" width="40" height="40"><span><%= p.nombre %><% if (!p.activo) { %> <small>(desactivado)</small><% } %></span></span></td>
+      <td><%= p.codigo_barras || '' %><%= p.codigo_barras && p.plu ? ' / ' : '' %><%= p.plu ? 'PLU ' + p.plu : '' %></td>
+      <td class="num"><span class="precio-tag"><%= fmtPrecio(p.tipo, p.precio) %></span></td>
+      <% const bajo = p.stock <= p.stock_minimo; const nivel = p.stock_minimo > 0 ? Math.max(0, Math.min(100, Math.round(p.stock * 100 / (p.stock_minimo * 3)))) : 100; %>
+      <td class="num <%= bajo ? 'bajo' : '' %>"><%= fmtCantidad(p.tipo, p.stock) %><span class="medidor<%= bajo ? ' bajo' : '' %>"><span style="width: <%= nivel %>%"></span></span></td>
+      <td><span class="estado"><%= p.afectacion_igv %></span></td>
+      <td class="accion">
+        <a class="boton-mini" href="/productos/<%= p.id %>/editar"><%- ico('editar') %> Editar</a>
+        <a class="boton-mini" href="/inventario/<%= p.id %>"><%- ico('inventario') %> Kardex</a>
+        <form method="post" action="/productos/<%= p.id %>/activo"<% if (p.activo) { %> data-confirmar="¿Desactivar <%= p.nombre %>? Ya no se podrá vender." data-confirmar-boton="Sí, desactivar"<% } %>>
+          <input type="hidden" name="activo" value="<%= p.activo ? '0' : '1' %>">
+          <button class="boton-mini<%= p.activo ? ' peligro' : '' %>"><%= p.activo ? 'Desactivar' : 'Activar' %></button>
+        </form>
+      </td>
+    </tr>
+  <% }) %>
+  </tbody>
+</table>
+</div>
+<% } %>
+<%- include('parciales/pie') %>

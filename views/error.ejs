@@ -1,0 +1,11 @@
+<%- include('parciales/encabezado', { titulo: 'Aviso' }) %>
+<section class="angosto">
+  <img class="ilustracion-centro" src="/img/ilustraciones/saco-volcado.svg" alt="" width="180" height="120">
+  <h1>Ups, algo se nos regó</h1>
+  <p><%= detalle %></p>
+  <div class="acciones" style="justify-content: center">
+    <button type="button" class="boton-secundario" onclick="history.back()"><%- ico('volver') %> Volver</button>
+    <a class="boton" href="/caja"><%- ico('caja') %> Ir a la caja</a>
+  </div>
+</section>
+<%- include('parciales/pie') %>

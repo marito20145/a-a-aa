@@ -1,0 +1,18 @@
+<%- include('parciales/encabezado', { titulo: 'Configuración inicial', notasPropias: true, claseMain: 'acceso-main' }) %>
+<div class="acceso-pantalla">
+  <%- include('parciales/escena-acceso') %>
+  <section class="acceso-panel">
+    <p class="acceso-marca"><span class="sello"><%- ico('caja') %></span><%= config.negocio.nombre %></p>
+    <h1>Bienvenido</h1>
+    <p class="cabecera-sub">Crea la cuenta del administrador. Con ella registrarás productos, cajeros y verás los reportes.</p>
+    <% if (locals.error) { %><p class="nota nota-error" role="alert"><%- ico('alerta') %><span class="nota-texto"><%= error %></span></p><% } %>
+    <form method="post" action="/configuracion-inicial" class="formulario">
+      <label>Nombre <input name="nombre" required autofocus></label>
+      <label>Usuario <input name="usuario" required autocomplete="username" pattern="[A-Za-z0-9._\-]{3,20}"></label>
+      <label>Contraseña <input name="clave" type="password" required minlength="6" autocomplete="new-password"></label>
+      <label>Repite la contraseña <input name="clave2" type="password" required minlength="6" autocomplete="new-password"></label>
+      <button class="boton">Crear administrador</button>
+    </form>
+  </section>
+</div>
+<%- include('parciales/pie') %>

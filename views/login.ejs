@@ -1,0 +1,24 @@
+<%- include('parciales/encabezado', { titulo: 'Ingresar', notasPropias: true, claseMain: 'acceso-main' }) %>
+<% const logo = fotoNegocio('logo'); %>
+<div class="acceso-pantalla">
+  <%- include('parciales/escena-acceso') %>
+  <section class="acceso-panel">
+    <p class="acceso-marca">
+      <% if (logo) { %><img src="<%= logo %>" alt=""><% } else { %><span class="sello"><%- ico('caja') %></span><% } %>
+      <%= config.negocio.nombre %>
+    </p>
+    <h1>Bienvenido</h1>
+    <p class="cabecera-sub">Ingresa con tu usuario para abrir la caja.</p>
+    <% if (locals.mensaje) { %><p class="nota nota-ok" role="status"><%- ico('check') %><span class="nota-texto"><%= mensaje %></span></p><% } %>
+    <% if (locals.error) { %><p class="nota nota-error" role="alert"><%- ico('alerta') %><span class="nota-texto"><%= error %></span></p><% } %>
+    <form method="post" action="/login" class="formulario">
+      <label for="usuario">Usuario</label>
+      <span class="campo-ico"><%- ico('usuarios') %><input id="usuario" name="usuario" required autofocus autocomplete="username"></span>
+      <label for="clave">Contraseña</label>
+      <span class="campo-ico"><%- ico('candado') %><input id="clave" name="clave" type="password" required autocomplete="current-password">
+        <button type="button" class="ver-clave" data-ver-clave="clave" aria-label="Mostrar contraseña" aria-pressed="false" hidden><%- ico('ojo') %></button></span>
+      <button class="boton">Ingresar</button>
+    </form>
+  </section>
+</div>
+<%- include('parciales/pie') %>

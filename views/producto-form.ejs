@@ -1,0 +1,53 @@
+<% const nuevo = !producto; const p = producto || {}; %>
+<%- include('parciales/encabezado', { titulo: nuevo ? 'Nuevo producto' : 'Editar producto' }) %>
+<section class="angosto ancho">
+  <div class="cabecera">
+    <div>
+      <h1><span class="titulo-ico"><%- ico(nuevo ? 'mas' : 'editar') %></span> <%= nuevo ? 'Nuevo producto' : 'Editar producto' %></h1>
+      <p class="cabecera-sub"><%= nuevo ? 'Regístralo una vez y véndelo con su código o PLU.' : 'Los cambios de precio se aplican desde la próxima venta.' %></p>
+    </div>
+  </div>
+  <div class="form-con-vista">
+    <form method="post" action="<%= nuevo ? '/productos' : '/productos/' + p.id %>" class="formulario" id="form-producto">
+      <label>Nombre <input name="nombre" value="<%= p.nombre || '' %>" required autofocus></label>
+      <fieldset>
+        <legend>Se vende</legend>
+        <div class="segmentos">
+          <label class="segmento"><input type="radio" name="tipo" value="unidad" <%= p.tipo !== 'peso' ? 'checked' : '' %>><span><%- ico('productos') %>Por unidad</span></label>
+          <label class="segmento"><input type="radio" name="tipo" value="peso" <%= p.tipo === 'peso' ? 'checked' : '' %>><span><%- ico('balanza') %>Por peso (kg)</span></label>
+        </div>
+      </fieldset>
+      <div class="rejilla">
+        <label>Código de barras <input name="codigo_barras" value="<%= p.codigo_barras || '' %>" autocomplete="off"></label>
+        <label>PLU (1 a 5 números) <input name="plu" value="<%= p.plu || '' %>" inputmode="numeric" autocomplete="off"></label>
+        <label>Precio (S/ por unidad o por kg) <input name="precio" value="<%= nuevo ? '' : aTextoSoles(p.precio) %>" inputmode="decimal" required></label>
+        <label>Stock mínimo (unidades o kg) <input name="stock_minimo" value="<%= nuevo ? '' : (p.tipo === 'peso' ? aTextoKg(p.stock_minimo) : p.stock_minimo) %>" inputmode="decimal"></label>
+        <% if (nuevo) { %>
+          <label>Stock inicial (unidades o kg) <input name="stock_inicial" inputmode="decimal"></label>
+        <% } %>
+        <label>IGV
+          <select name="afectacion_igv">
+            <% ['gravado', 'exonerado', 'inafecto'].forEach(function (a) { %>
+              <option value="<%= a %>" <%= (p.afectacion_igv || 'gravado') === a ? 'selected' : '' %>><%= a.charAt(0).toUpperCase() + a.slice(1) %></option>
+            <% }) %>
+          </select>
+        </label>
+      </div>
+      <p class="ayuda">Los productos por peso necesitan PLU. El precio incluye IGV. Confirma con el contador qué productos están exonerados. Para mostrar una foto, guárdala como public/img/productos/&lt;código o PLU&gt;.jpg.</p>
+      <div class="acciones">
+        <button class="boton"><%- ico('check') %> <%= nuevo ? 'Registrar producto' : 'Guardar cambios' %></button>
+        <a class="boton-secundario" href="/productos"><%- ico('volver') %> Volver</a>
+      </div>
+    </form>
+    <aside class="vista-previa" aria-label="Vista previa de la etiqueta">
+      <p class="subtitulo">Así se verá en la caja</p>
+      <img src="<%= imagenProducto(p.nombre ? p : { nombre: '', tipo: p.tipo || 'unidad' }) %>" alt="" width="72" height="72">
+      <div class="etiqueta">
+        <span class="etiqueta-titulo" id="vista-nombre"><%= p.nombre || 'Nombre del producto' %></span>
+        <strong class="etiqueta-monto" id="vista-precio">S/ <%= nuevo ? '0.00' : aTextoSoles(p.precio) %></strong>
+        <span class="etiqueta-pie" id="vista-tipo"><%= p.tipo === 'peso' ? 'por kg' : 'por unidad' %></span>
+      </div>
+    </aside>
+  </div>
+</section>
+<%- include('parciales/pie', { scripts: ['/js/producto.js'] }) %>

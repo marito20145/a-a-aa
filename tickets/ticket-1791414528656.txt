@@ -1,0 +1,21 @@
+              MI MINIMARKET
+------------------------------------------
+BOLETA DE VENTA B001-00000001
+Fecha: 2026-10-07 18:08:48
+Cajero: admin
+------------------------------------------
+Leche evaporada 400 g
+  1 u x S/ 4.20                    S/ 4.20
+Tomate
+  0.500 kg x S/ 3.50/kg            S/ 1.75
+------------------------------------------
+Op. gravada                        S/ 3.56
+IGV 18%                            S/ 0.64
+Op. exonerada                      S/ 1.75
+TOTAL                              S/ 5.95
+------------------------------------------
+Efectivo                          S/ 50.00
+Vuelto                            S/ 44.05
+------------------------------------------
+Comprobante no enviado a SUNAT (prueba)
+          Gracias por su compra

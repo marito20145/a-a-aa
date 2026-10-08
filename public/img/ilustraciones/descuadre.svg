@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 160">
+  <!-- Alerta: la caja no cuadra (balanza desequilibrada) -->
+  <ellipse cx="90" cy="150" rx="60" ry="6" fill="#18211f" opacity=".1"/>
+  <rect x="84" y="40" width="12" height="100" rx="3" fill="#9a6a37"/>
+  <rect x="56" y="134" width="68" height="10" rx="4" fill="#c08a4f"/>
+  <g transform="rotate(-14 90 44)">
+    <rect x="22" y="40" width="136" height="8" rx="4" fill="#0f6b56"/>
+    <path d="M30 48l-14 34M30 48l14 34M150 48l-14 34M150 48l14 34" stroke="#0a4f40" stroke-width="2"/>
+    <path d="M10 82h40a20 12 0 0 1-40 0z" fill="#ffcf3d"/>
+    <path d="M130 82h40a20 12 0 0 1-40 0z" fill="#ffcf3d"/>
+    <circle cx="150" cy="76" r="7" fill="#e3b11e"/><circle cx="141" cy="78" r="5" fill="#e3b11e"/>
+  </g>
+  <circle cx="90" cy="40" r="7" fill="#0a4f40"/>
+  <path d="M140 8l22 38h-44z" fill="#b5452f" stroke="#b5452f" stroke-width="4" stroke-linejoin="round"/>
+  <path d="M140 21v12M140 39v.5" stroke="#fffaf0" stroke-width="4" stroke-linecap="round"/>
+</svg>

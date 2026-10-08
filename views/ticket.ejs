@@ -1,0 +1,18 @@
+<%- include('parciales/encabezado', { titulo: 'Ticket' }) %>
+<section class="angosto">
+  <div class="cabecera">
+    <div>
+      <h1><span class="titulo-ico"><%- ico('comprobantes') %></span> Ticket</h1>
+      <p class="cabecera-sub">Copia del ticket impreso de la venta N.º <%= ventaId %>.</p>
+    </div>
+  </div>
+  <div class="ticket-papel">
+    <pre class="ticket"><%= lineasTicket.join('\n') %></pre>
+    <span class="ticket-sello" aria-hidden="true">GRACIAS</span>
+  </div>
+  <div class="acciones" style="justify-content: center">
+    <form method="post" action="/comprobantes/reimprimir/<%= ventaId %>"><button class="boton"><%- ico('imprimir') %> Reimprimir</button></form>
+    <a class="boton-secundario" href="/caja"><%- ico('caja') %> Ir a la caja</a>
+  </div>
+</section>
+<%- include('parciales/pie') %>

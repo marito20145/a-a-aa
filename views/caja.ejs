@@ -1,0 +1,117 @@
+<%- include('parciales/encabezado', { titulo: 'Caja', claseMain: 'ancho-completo', notasPropias: true, menuCompacto: true }) %>
+<% // El mensaje de la venta anterior trae el vuelto ("... Vuelto: S/ 7.50."); se muestra en grande.
+   const vueltoPrevio = locals.mensaje && (/Vuelto: (S\/ [\d.,]+\d)/.exec(mensaje) || [])[1]; %>
+<div class="caja">
+  <section class="caja-venta">
+    <form method="post" action="/caja/agregar" class="escaneo" id="form-escaneo" data-agrega>
+      <label for="codigo"><%- ico('buscar') %> Código de barras o PLU</label>
+      <div class="escaneo-fila">
+        <input id="codigo" name="codigo" autocomplete="off" autofocus required placeholder="Escanea o escribe y presiona Enter">
+        <% if (config.balanza.simulada) { %>
+          <input name="peso_simulado" id="peso-simulado" class="peso-simulado" inputmode="decimal" placeholder="Peso kg" aria-label="Peso simulado en kg">
+        <% } %>
+        <button class="boton"><%- ico('mas') %> Agregar</button>
+        <button type="button" class="boton-secundario boton-buscar solo-js" id="abrir-buscador" title="Buscar por nombre (F4)"><%- ico('buscar') %> <kbd>F4</kbd></button>
+      </div>
+      <% if (locals.error) { %><p class="nota nota-error" role="alert"><%- ico('alerta') %><span class="nota-texto"><%= error %></span></p><% } %>
+      <p class="ultimo" id="ultimo" hidden>
+        <span class="ultimo-etiqueta"><%- ico('check') %> Agregado</span>
+        <span class="ultimo-nombre" id="ultimo-nombre"></span>
+        <span class="ultimo-cantidad" id="ultimo-cantidad"></span>
+        <span class="ultimo-monto" id="ultimo-monto"></span>
+      </p>
+      <p class="ayuda">Varias unidades: cantidad, asterisco y código (3*7751234567890).<% if (config.balanza.simulada) { %> Balanza simulada: escribe el peso junto al PLU.<% } %></p>
+    </form>
+
+    <% if (rapidos.length) { %>
+      <details class="rapidos-caja" id="rapidos" open>
+        <summary>Productos rápidos</summary>
+        <div class="rapidos-fila">
+          <% rapidos.forEach(function (p) { %>
+            <form method="post" action="/caja/agregar" data-agrega>
+              <input type="hidden" name="codigo" value="<%= p.plu %>">
+              <% if (config.balanza.simulada) { %><input type="hidden" name="peso_simulado" data-copia-peso><% } %>
+              <button class="producto-rapido" title="PLU <%= p.plu %>">
+                <img src="<%= imagenProducto(p) %>" alt="" width="40" height="40">
+                <span><strong><%= p.nombre %></strong><span class="precio-tag"><%= fmtPrecio(p.tipo, p.precio) %></span></span>
+              </button>
+            </form>
+          <% }) %>
+        </div>
+      </details>
+    <% } %>
+
+    <% if (lineas.length === 0) { %>
+      <div class="vacio">
+        <img src="/img/ilustraciones/canasta-vacia.svg" alt="" width="136" height="102">
+        <strong>Escanea el primer producto</strong>
+        La venta aparecerá aquí.
+      </div>
+    <% } else { %>
+      <div class="tabla-marco">
+        <table class="tabla tabla-venta">
+          <thead><tr><th class="n">#</th><th>Producto</th><th class="num">Cantidad</th><th class="num">Precio</th><th class="num">Subtotal</th><th><span class="oculto">Acciones</span></th></tr></thead>
+          <tbody>
+          <% lineas.forEach(function (l, i) { %>
+            <tr data-linea="<%= l.id %>" data-cantidad="<%= l.cantidad %>">
+              <td class="n"><%= i + 1 %></td>
+              <td><span class="con-miniatura"><img class="miniatura" src="<%= imagenProducto(l) %>" alt="" width="34" height="34"><span class="producto"><%= l.descripcion %></span></span></td>
+              <td class="num cantidad"><%= fmtCantidad(l.tipo, l.cantidad) %></td>
+              <td class="num"><%= fmtPrecio(l.tipo, l.precio_unitario) %></td>
+              <td class="num subtotal"><%= soles(l.subtotal) %></td>
+              <td class="accion"><form method="post" action="/caja/quitar/<%= l.id %>"><button class="boton-mini peligro" aria-label="Quitar <%= l.descripcion %>"><%- ico('cerrar') %> Quitar</button></form></td>
+            </tr>
+          <% }) %>
+          </tbody>
+        </table>
+      </div>
+    <% } %>
+  </section>
+
+  <aside class="caja-lateral">
+    <% if (locals.mensaje) { %>
+      <div class="venta-anterior" role="status">
+        <% if (vueltoPrevio) { %>
+          <span class="venta-anterior-titulo"><%- ico('efectivo') %> Vuelto a entregar</span>
+          <strong class="venta-anterior-vuelto"><%= vueltoPrevio %></strong>
+        <% } %>
+        <p><%= mensaje %></p>
+      </div>
+    <% } %>
+    <% if (locals.aviso) { %><p class="nota nota-aviso" role="status"><%- ico('alerta') %><span class="nota-texto"><%= aviso %></span></p><% } %>
+    <div class="etiqueta">
+      <span class="etiqueta-titulo">Total</span>
+      <strong class="etiqueta-monto"><%= soles(total) %></strong>
+      <span class="etiqueta-pie"><%= lineas.length %> <%= lineas.length === 1 ? 'producto' : 'productos' %></span>
+    </div>
+    <% if (lineas.length) { %>
+      <a href="/caja/cobrar" class="boton boton-grande" id="ir-cobrar"><%- ico('efectivo') %> Cobrar <kbd>F2</kbd></a>
+      <form method="post" action="/caja/cancelar" id="form-cancelar" data-confirmar="¿Cancelar toda la venta?" data-confirmar-boton="Sí, cancelar venta">
+        <button class="boton-secundario bloque"><%- ico('cerrar') %> Cancelar venta</button>
+      </form>
+    <% } %>
+    <dl class="datos">
+      <dt>Cajero</dt><dd><%= turno.cajero %></dd>
+      <dt>Turno desde</dt><dd><%= turno.abierto_en %></dd>
+    </dl>
+    <% if (ultimaVenta) { %><a class="boton-secundario bloque" id="ultimo-ticket" href="/comprobantes/ticket/<%= ultimaVenta %>"><%- ico('imprimir') %> Ticket anterior <kbd>F3</kbd></a><% } %>
+    <ul class="atajos" aria-label="Atajos de teclado">
+      <% if (lineas.length) { %><li><kbd>F2</kbd>Cobrar</li><% } %>
+      <li><kbd>Esc</kbd>Borrar código<% if (lineas.length) { %> / cancelar venta<% } %></li>
+      <% if (ultimaVenta) { %><li><kbd>F3</kbd>Ticket anterior</li><% } %>
+      <li class="solo-js"><kbd>F4</kbd>Buscar por nombre</li>
+    </ul>
+  </aside>
+</div>
+
+<dialog class="dialogo buscador-dialogo" id="buscador" aria-label="Buscar producto por nombre">
+  <div class="buscador-cabeza">
+    <%- ico('buscar') %>
+    <input id="buscador-texto" type="search" autocomplete="off" placeholder="Escribe el nombre del producto…" aria-label="Nombre del producto" aria-controls="resultados">
+  </div>
+  <ul class="resultados" id="resultados" role="listbox" aria-label="Productos encontrados">
+    <li class="resultados-vacio" role="presentation">Escribe al menos 2 letras.</li>
+  </ul>
+  <div class="buscador-pie"><span><kbd>↑</kbd> <kbd>↓</kbd> elegir</span><span><kbd>Enter</kbd> agregar</span><span><kbd>Esc</kbd> cerrar</span></div>
+</dialog>
+<%- include('parciales/pie', { scripts: ['/js/caja.js'] }) %>

@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 150">
+  <!-- Equipo de la bodega: mandil con fotocheck y llaves de la caja -->
+  <ellipse cx="130" cy="142" rx="90" ry="7" fill="#000" opacity=".18"/>
+  <path d="M104 16q26 14 52 0" fill="none" stroke="#0a4f40" stroke-width="5" stroke-linecap="round"/>
+  <path d="M100 22h60l4 30 22 4-6 84H80l-6-84 22-4z" fill="#0f6b56"/>
+  <path d="M74 56l-12 6M186 56l12 6" stroke="#0a4f40" stroke-width="5" stroke-linecap="round"/>
+  <rect x="96" y="92" width="68" height="30" rx="4" fill="#0a4f40"/>
+  <path d="M96 100h68" stroke="#13785f" stroke-width="2"/>
+  <rect x="140" y="40" width="30" height="20" rx="3" fill="#fffaf0"/>
+  <rect x="144" y="44" width="8" height="8" rx="2" fill="#ffcf3d"/>
+  <path d="M155 46h11M155 52h8" stroke="#5b6663" stroke-width="2" stroke-linecap="round"/>
+  <circle cx="210" cy="40" r="10" fill="none" stroke="#ffcf3d" stroke-width="4"/>
+  <path d="M216 48l14 14M224 56l-5 5M229 61l-4 4" stroke="#ffcf3d" stroke-width="4" stroke-linecap="round"/>
+  <circle cx="40" cy="44" r="4" fill="#ffcf3d"/><circle cx="56" cy="104" r="3" fill="#b5452f"/>
+</svg>

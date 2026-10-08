@@ -1,0 +1,56 @@
+<%- include('parciales/encabezado', { titulo: 'Inventario' }) %>
+<header class="portada">
+  <div>
+    <p class="portada-ceja"><%- ico('inventario') %> Almacén</p>
+    <h1>Inventario</h1>
+    <p class="portada-sub">Registra la mercadería que llega del proveedor y los ajustes de stock.</p>
+  </div>
+  <img class="portada-img" src="/img/ilustraciones/camion.svg" alt="" width="240" height="137">
+</header>
+<section class="bloque-claro">
+  <div>
+    <h2><%- ico('mas') %> Registrar movimiento</h2>
+    <form method="post" action="/inventario/movimiento" class="formulario">
+      <div class="rejilla">
+        <label>Código de barras o PLU <input name="codigo" required autofocus autocomplete="off"></label>
+        <label>Cantidad (unidades o kg) <input name="cantidad" inputmode="decimal" required autocomplete="off"></label>
+        <label>Tipo
+          <select name="tipo">
+            <option value="compra">Ingreso de mercadería</option>
+            <option value="ajuste">Ajuste</option>
+          </select>
+        </label>
+        <label>En un ajuste
+          <select name="sentido">
+            <option value="sumar">Sumar al stock</option>
+            <option value="restar">Restar del stock</option>
+          </select>
+        </label>
+        <label class="doble">Nota (obligatoria en ajustes) <input name="nota" placeholder="Ej.: factura del proveedor, merma, conteo físico"></label>
+      </div>
+      <div><button class="boton"><%- ico('check') %> Registrar movimiento</button></div>
+    </form>
+  </div>
+</section>
+
+<form method="get" action="/inventario" class="buscador">
+  <input name="q" value="<%= q %>" placeholder="Buscar producto" aria-label="Buscar producto">
+  <button class="boton-secundario"><%- ico('buscar') %> Buscar</button>
+</form>
+<div class="tabla-marco">
+<table class="tabla">
+  <thead><tr><th>Producto</th><th class="num">Stock</th><th class="num">Mínimo</th><th><span class="oculto">Acciones</span></th></tr></thead>
+  <tbody>
+  <% productos.filter(function (p) { return p.activo; }).forEach(function (p) { %>
+    <tr>
+      <td><span class="con-miniatura"><img class="miniatura" src="<%= imagenProducto(p) %>" alt="" width="40" height="40"><%= p.nombre %></span></td>
+      <% const bajo = p.stock <= p.stock_minimo; const nivel = p.stock_minimo > 0 ? Math.max(0, Math.min(100, Math.round(p.stock * 100 / (p.stock_minimo * 3)))) : 100; %>
+      <td class="num <%= bajo ? 'bajo' : '' %>"><%= fmtCantidad(p.tipo, p.stock) %><span class="medidor<%= bajo ? ' bajo' : '' %>"><span style="width: <%= nivel %>%"></span></span></td>
+      <td class="num"><%= fmtCantidad(p.tipo, p.stock_minimo) %></td>
+      <td class="accion"><a class="boton-mini" href="/inventario/<%= p.id %>"><%- ico('inventario') %> Ver kardex</a></td>
+    </tr>
+  <% }) %>
+  </tbody>
+</table>
+</div>
+<%- include('parciales/pie') %>

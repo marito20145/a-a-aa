@@ -1,0 +1,39 @@
+<%- include('parciales/encabezado', { titulo: 'Clientes' }) %>
+<header class="portada">
+  <div>
+    <p class="portada-ceja"><%- ico('clientes') %> Caseros</p>
+    <h1>Clientes</h1>
+    <p class="portada-sub">Tus clientes de confianza. Se registran solos al cobrar con DNI o RUC.</p>
+    <div class="portada-acciones">
+      <form method="get" action="/clientes" class="buscador">
+        <input name="q" value="<%= q %>" placeholder="Buscar por nombre o documento" aria-label="Buscar clientes">
+        <button class="boton-secundario"><%- ico('buscar') %> Buscar</button>
+      </form>
+    </div>
+  </div>
+  <img class="portada-img" src="/img/ilustraciones/portada-clientes.svg" alt="" width="240" height="138">
+</header>
+<% if (clientes.length === 0) { %>
+  <div class="vacio">
+    <img src="/img/ilustraciones/canasta-vacia.svg" alt="" width="136" height="102">
+    <strong><%= q ? 'Nada por aquí' : 'Aún no hay clientes' %></strong>
+    <%= q ? 'Ningún cliente coincide con la búsqueda.' : 'Los clientes se registran solos al cobrar con DNI o RUC.' %>
+  </div>
+<% } else { %>
+<div class="tabla-marco">
+<table class="tabla">
+  <thead><tr><th>Nombre</th><th>Documento</th><th>Dirección</th><th><span class="oculto">Acciones</span></th></tr></thead>
+  <tbody>
+  <% clientes.forEach(function (c) { %>
+    <tr>
+      <td><span class="con-miniatura"><span class="avatar" aria-hidden="true"><%= c.nombre.charAt(0).toUpperCase() %></span><%= c.nombre %></span></td>
+      <td><span class="estado"><%= c.tipo_documento %></span> <%= c.numero_documento %></td>
+      <td><%= c.direccion || '' %></td>
+      <td class="accion"><a class="boton-mini" href="/clientes/<%= c.id %>/editar"><%- ico('editar') %> Editar</a></td>
+    </tr>
+  <% }) %>
+  </tbody>
+</table>
+</div>
+<% } %>
+<%- include('parciales/pie') %>

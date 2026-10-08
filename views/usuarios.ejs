@@ -1,0 +1,58 @@
+<%- include('parciales/encabezado', { titulo: 'Usuarios' }) %>
+<header class="portada">
+  <div>
+    <p class="portada-ceja"><%- ico('usuarios') %> Equipo</p>
+    <h1>Usuarios</h1>
+    <p class="portada-sub">Cajeros y administradores que pueden abrir la caja.</p>
+    <div class="portada-acciones">
+      <a class="boton boton-oro" href="#nuevo-usuario"><%- ico('mas') %> Nuevo usuario</a>
+    </div>
+  </div>
+  <img class="portada-img" src="/img/ilustraciones/portada-usuarios.svg" alt="" width="240" height="138">
+</header>
+<div class="tabla-marco">
+<table class="tabla">
+  <thead><tr><th>Nombre</th><th>Usuario</th><th>Rol</th><th>Estado</th><th>Nueva contraseña</th><th><span class="oculto">Acciones</span></th></tr></thead>
+  <tbody>
+  <% usuarios.forEach(function (u) { %>
+    <tr class="<%= u.activo ? '' : 'inactivo' %>">
+      <td><span class="con-miniatura"><span class="avatar" aria-hidden="true"><%= u.nombre.charAt(0).toUpperCase() %></span><%= u.nombre %></span></td>
+      <td><%= u.usuario %></td>
+      <td><%= u.rol === 'admin' ? 'Administrador' : 'Cajero' %></td>
+      <td><span class="estado <%= u.activo ? 'estado-enviado' : 'estado-anulado' %>"><%= u.activo ? 'Activo' : 'Desactivado' %></span></td>
+      <td>
+        <form method="post" action="/usuarios/<%= u.id %>/clave" class="en-linea">
+          <input name="clave" type="password" minlength="6" required aria-label="Nueva contraseña de <%= u.nombre %>" autocomplete="new-password">
+          <button class="boton-mini"><%- ico('candado') %> Cambiar</button>
+        </form>
+      </td>
+      <td class="accion">
+        <form method="post" action="/usuarios/<%= u.id %>/activo"<% if (u.activo) { %> data-confirmar="¿Desactivar a <%= u.nombre %>? Ya no podrá entrar al sistema." data-confirmar-boton="Sí, desactivar"<% } %>>
+          <input type="hidden" name="activo" value="<%= u.activo ? '0' : '1' %>">
+          <button class="boton-mini<%= u.activo ? ' peligro' : '' %>"><%= u.activo ? 'Desactivar' : 'Activar' %></button>
+        </form>
+      </td>
+    </tr>
+  <% }) %>
+  </tbody>
+</table>
+</div>
+
+<section class="bloque-claro" id="nuevo-usuario">
+  <h2><%- ico('mas') %> Nuevo usuario</h2>
+  <form method="post" action="/usuarios" class="formulario">
+    <div class="rejilla">
+      <label>Nombre <input name="nombre" required></label>
+      <label>Usuario <input name="usuario" required autocomplete="off" pattern="[A-Za-z0-9._\-]{3,20}"></label>
+      <label>Contraseña <input name="clave" type="password" required minlength="6" autocomplete="new-password"></label>
+      <label>Rol
+        <select name="rol">
+          <option value="cajero">Cajero</option>
+          <option value="admin">Administrador</option>
+        </select>
+      </label>
+    </div>
+    <div><button class="boton"><%- ico('mas') %> Crear usuario</button></div>
+  </form>
+</section>
+<%- include('parciales/pie') %>

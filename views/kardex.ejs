@@ -1,0 +1,41 @@
+<%- include('parciales/encabezado', { titulo: 'Kardex' }) %>
+<header class="portada">
+  <div>
+    <p class="portada-ceja"><%- ico('inventario') %> Kardex</p>
+    <h1><%= producto.nombre %></h1>
+    <p class="portada-sub">Todas las entradas y salidas de este producto.</p>
+    <div class="portada-acciones">
+      <span class="portada-dato<%= producto.stock <= producto.stock_minimo ? ' bajo' : '' %>"><span>Stock actual</span><strong><%= fmtCantidad(producto.tipo, producto.stock) %></strong></span>
+      <span class="portada-dato"><span>Mínimo</span><strong><%= fmtCantidad(producto.tipo, producto.stock_minimo) %></strong></span>
+      <span class="portada-dato"><span>Precio</span><strong><%= fmtPrecio(producto.tipo, producto.precio) %></strong></span>
+      <a class="boton-secundario" href="/inventario"><%- ico('volver') %> Volver al inventario</a>
+    </div>
+  </div>
+  <img class="portada-foto" src="<%= imagenProducto(producto) %>" alt="" width="120" height="120">
+</header>
+<% if (movimientos.length === 0) { %>
+  <div class="vacio">
+    <img src="/img/ilustraciones/camion.svg" alt="" width="160" height="91">
+    <strong>Sin movimientos todavía</strong>
+    Registra el primer ingreso de mercadería en Inventario.
+  </div>
+<% } else { %>
+<div class="tabla-marco">
+<table class="tabla">
+  <thead><tr><th>Fecha</th><th>Tipo</th><th class="num">Cantidad</th><th>Usuario</th><th>Nota</th></tr></thead>
+  <tbody>
+  <% const tipos = { venta: 'Venta', compra: 'Ingreso', ajuste: 'Ajuste', anulacion: 'Anulación' };
+     movimientos.forEach(function (m) { %>
+    <tr>
+      <td><%= m.creado_en %></td>
+      <td><%= tipos[m.tipo] %><%= m.venta_id ? ' #' + m.venta_id : '' %></td>
+      <td class="num <%= m.cantidad < 0 ? 'salida' : 'entrada' %>"><%= m.cantidad > 0 ? '+' : '' %><%= fmtCantidad(producto.tipo, m.cantidad) %></td>
+      <td><%= m.usuario || '' %></td>
+      <td><%= m.nota || '' %></td>
+    </tr>
+  <% }) %>
+  </tbody>
+</table>
+</div>
+<% } %>
+<%- include('parciales/pie') %>

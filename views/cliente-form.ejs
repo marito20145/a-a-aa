@@ -1,0 +1,18 @@
+<%- include('parciales/encabezado', { titulo: 'Editar cliente' }) %>
+<section class="angosto">
+  <div class="cabecera">
+    <div>
+      <h1><span class="titulo-ico"><%- ico('clientes') %></span> Editar cliente</h1>
+      <p class="cabecera-sub"><%= cliente.tipo_documento %> <%= cliente.numero_documento %></p>
+    </div>
+  </div>
+  <form method="post" action="/clientes/<%= cliente.id %>" class="formulario">
+    <label>Nombre o razón social <input name="nombre" value="<%= cliente.nombre %>" required autofocus></label>
+    <label>Dirección <input name="direccion" value="<%= cliente.direccion || '' %>"></label>
+    <div class="acciones">
+      <button class="boton"><%- ico('check') %> Guardar cambios</button>
+      <a class="boton-secundario" href="/clientes"><%- ico('volver') %> Volver</a>
+    </div>
+  </form>
+</section>
+<%- include('parciales/pie') %>

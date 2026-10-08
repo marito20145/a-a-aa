@@ -1,0 +1,73 @@
+<%- include('parciales/encabezado', { titulo: 'Cobrar', claseMain: 'ancho-completo', menuCompacto: true }) %>
+<div class="caja">
+  <section class="caja-venta">
+    <form method="post" action="/caja/cobrar" class="formulario" id="form-cobro">
+      <fieldset>
+        <legend><%- ico('efectivo') %> Pago</legend>
+        <div class="pago">
+          <div>
+            <label class="campo-grande">Efectivo recibido <input name="efectivo" inputmode="decimal" value="<%= aTextoSoles(total) %>" autofocus data-pago autocomplete="off"></label>
+            <div class="rapidos solo-js" aria-label="Montos rápidos en efectivo">
+              <button type="button" class="rapido rapido-exacto" data-exacto>Exacto</button>
+              <% [10, 20, 50, 100, 200].forEach(function (b) { %>
+                <button type="button" class="rapido" data-billete="<%= b * 100 %>">S/ <%= b %></button>
+              <% }) %>
+            </div>
+          </div>
+          <div>
+            <p class="subtitulo">Otros medios</p>
+            <div class="rejilla rejilla-medios">
+              <label><span><%- ico('tarjeta') %> Tarjeta</span> <input name="tarjeta" inputmode="decimal" data-pago autocomplete="off"></label>
+              <label><span><%- ico('celular') %> Yape</span> <input name="yape" inputmode="decimal" data-pago autocomplete="off"></label>
+              <label><span><%- ico('celular') %> Plin</span> <input name="plin" inputmode="decimal" data-pago autocomplete="off"></label>
+              <label><span><%- ico('transferencia') %> Transferencia</span> <input name="transferencia" inputmode="decimal" data-pago autocomplete="off"></label>
+            </div>
+            <p class="subtitulo solo-js" style="margin-top: 0.9rem">Cobrar todo con</p>
+            <div class="medios-tiles solo-js">
+              <button type="button" class="medio-tile" data-todo="tarjeta"><%- ico('tarjeta') %> Tarjeta</button>
+              <button type="button" class="medio-tile" data-todo="yape"><%- ico('celular') %> Yape</button>
+              <button type="button" class="medio-tile" data-todo="plin"><%- ico('celular') %> Plin</button>
+              <button type="button" class="medio-tile" data-todo="transferencia"><%- ico('transferencia') %> Transf.</button>
+            </div>
+          </div>
+        </div>
+        <label id="campo-referencia">N.º de operación <input name="referencia" autocomplete="off"></label>
+      </fieldset>
+      <fieldset>
+        <legend><%- ico('comprobantes') %> Comprobante</legend>
+        <div class="segmentos">
+          <label class="segmento"><input type="radio" name="comprobante" value="boleta" checked><span><%- ico('comprobantes') %>Boleta</span></label>
+          <label class="segmento"><input type="radio" name="comprobante" value="factura"><span><%- ico('productos') %>Factura</span></label>
+        </div>
+        <div class="rejilla">
+          <label><span id="texto-documento">DNI o RUC</span> <input name="documento" inputmode="numeric" autocomplete="off"></label>
+          <label>Nombre o razón social <input name="cliente_nombre" autocomplete="off"></label>
+          <label class="doble" id="campo-direccion">Dirección <input name="cliente_direccion" autocomplete="off"></label>
+        </div>
+        <p class="ayuda">En boletas el documento es opcional hasta <%= soles(montoDocumento) %>. La factura necesita RUC. Si el cliente ya compró antes, basta con su documento.</p>
+      </fieldset>
+      <p class="nota nota-error" id="aviso-cobro" role="alert" hidden></p>
+      <div class="acciones acciones-cobro">
+        <button class="boton boton-grande" id="registrar"><%- ico('check') %> Registrar pago <kbd>Enter</kbd></button>
+        <a href="/caja" class="boton-secundario" id="volver"><%- ico('volver') %> Volver <kbd>Esc</kbd></a>
+      </div>
+    </form>
+  </section>
+  <aside class="caja-lateral">
+    <div class="etiqueta">
+      <span class="etiqueta-titulo">Total a cobrar</span>
+      <strong class="etiqueta-monto" data-total="<%= total %>"><%= soles(total) %></strong>
+      <span class="etiqueta-pie"><%= lineas.length %> <%= lineas.length === 1 ? 'producto' : 'productos' %></span>
+    </div>
+    <div class="vuelto-panel" id="vuelto-panel" aria-live="polite">
+      <span><%- ico('efectivo') %> <span id="vuelto-titulo">Vuelto</span></span>
+      <strong id="vuelto">S/ 0.00</strong>
+    </div>
+    <ul class="resumen" aria-label="Productos de la venta">
+      <% lineas.forEach(function (l) { %>
+        <li><span><%= l.descripcion %></span><span class="num"><%= soles(l.subtotal) %></span></li>
+      <% }) %>
+    </ul>
+  </aside>
+</div>
+<%- include('parciales/pie', { scripts: ['/js/cobro.js'] }) %>

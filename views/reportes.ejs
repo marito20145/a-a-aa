@@ -1,0 +1,142 @@
+<%- include('parciales/encabezado', { titulo: 'Reportes' }) %>
+<% const icoMedio = { efectivo: 'efectivo', tarjeta: 'tarjeta', yape: 'celular', plin: 'celular', transferencia: 'transferencia' };
+   const totalMedios = porMedio.reduce(function (s, m) { return s + m.total; }, 0); %>
+<header class="portada portada-estantes">
+  <div>
+    <p class="portada-ceja"><%- ico('reportes') %> Cuentas del día</p>
+    <h1>Reporte del día</h1>
+    <p class="portada-sub">Ventas, medios de pago, productos estrella, stock bajo y turnos.</p>
+    <div class="portada-acciones">
+      <form method="get" action="/reportes" class="buscador">
+        <input type="date" name="fecha" value="<%= fecha %>" aria-label="Fecha">
+        <button class="boton-secundario"><%- ico('calendario') %> Ver día</button>
+      </form>
+    </div>
+  </div>
+  <img class="portada-img" src="/img/ilustraciones/portada-reportes.svg" alt="" width="240" height="138">
+</header>
+
+<section class="cifras">
+  <div class="cifra cifra-principal"><span class="cifra-ico"><%- ico('efectivo') %></span><div><span>Vendido</span><strong><%= soles(resumen.total) %></strong></div></div>
+  <div class="cifra"><span class="cifra-ico"><%- ico('caja') %></span><div><span>Ventas</span><strong><%= resumen.cantidad %></strong></div></div>
+  <div class="cifra<%= anuladas ? ' cifra-alerta' : '' %>"><span class="cifra-ico"><%- ico('cerrar') %></span><div><span>Anuladas</span><strong><%= anuladas %></strong></div></div>
+  <div class="cifra<%= stockBajo.length ? ' cifra-alerta' : '' %>"><span class="cifra-ico"><%- ico('alerta') %></span><div><span>Stock bajo</span><strong><%= stockBajo.length %></strong></div></div>
+</section>
+
+<section class="panel">
+  <h2>Ventas por medio de pago</h2>
+  <% if (porMedio.length === 0) { %><p class="vacio">Sin pagos este día.</p><% } else { %>
+  <ul class="barras">
+    <% porMedio.forEach(function (m) { const pct = totalMedios ? Math.round(m.total * 100 / totalMedios) : 0; %>
+      <li>
+        <span class="barras-nombre"><%- ico(icoMedio[m.medio] || 'efectivo') %> <%= nombreMedio(m.medio) %></span>
+        <span class="barras-pista" role="img" aria-label="<%= pct %>% del total"><span class="barras-valor" style="width: <%= pct %>%"></span></span>
+        <span class="barras-monto"><%= soles(m.total) %><small><%= pct %>%</small></span>
+      </li>
+    <% }) %>
+  </ul>
+  <% } %>
+</section>
+
+<% if (stockBajo.length) { %>
+<section>
+  <h2>Stock bajo</h2>
+  <div class="tabla-marco">
+  <table class="tabla">
+    <thead><tr><th>Producto</th><th class="num">Stock</th><th class="num">Mínimo</th><th><span class="oculto">Acciones</span></th></tr></thead>
+    <tbody>
+    <% stockBajo.forEach(function (p) { %>
+      <tr>
+        <td><span class="con-miniatura"><img class="miniatura" src="<%= imagenProducto(p) %>" alt="" width="40" height="40"><%= p.nombre %></span></td>
+        <td class="num bajo"><%= fmtCantidad(p.tipo, p.stock) %></td>
+        <td class="num"><%= fmtCantidad(p.tipo, p.stock_minimo) %></td>
+        <td class="accion"><a class="boton-mini" href="/inventario/<%= p.id %>"><%- ico('inventario') %> Kardex</a></td>
+      </tr>
+    <% }) %>
+    </tbody>
+  </table>
+  </div>
+</section>
+<% } %>
+
+<section>
+  <h2>Más vendidos</h2>
+  <% if (masVendidos.length === 0) { %><p class="vacio">Sin ventas este día.</p><% } else { const mayor = masVendidos[0].total || 1; %>
+  <div class="tabla-marco">
+  <table class="tabla">
+    <thead><tr><th>Producto</th><th class="num">Cantidad</th><th class="num">Total</th></tr></thead>
+    <tbody>
+    <% masVendidos.forEach(function (p, i) { %>
+      <tr>
+        <td><span class="con-miniatura"><span class="puesto puesto-<%= i + 1 %>"><%= i + 1 %></span><img class="miniatura" src="<%= imagenProducto(p) %>" alt="" width="40" height="40"><span style="flex: 1"><%= p.nombre %><span class="barra-mini" style="width: <%= Math.round(p.total * 100 / mayor) %>%"></span></span></span></td>
+        <td class="num"><%= fmtCantidad(p.tipo, p.cantidad) %></td>
+        <td class="num"><strong><%= soles(p.total) %></strong></td>
+      </tr>
+    <% }) %>
+    </tbody>
+  </table>
+  </div>
+  <% } %>
+</section>
+
+<section>
+  <h2>Ventas</h2>
+  <% if (ventas.length === 0) { %><p class="vacio">Sin ventas este día.</p><% } else { %>
+  <div class="tabla-marco">
+  <table class="tabla">
+    <thead><tr><th>Hora</th><th>Comprobante</th><th>Cliente</th><th>Cajero</th><th class="num">Total</th><th>Estado</th><th><span class="oculto">Acciones</span></th></tr></thead>
+    <tbody>
+    <% ventas.forEach(function (v) { %>
+      <tr class="<%= v.estado === 'anulada' ? 'inactivo' : '' %>">
+        <td><%= (v.pagada_en || '').slice(11, 16) %></td>
+        <td><%= v.comprobante %></td>
+        <td><%= v.cliente || '' %></td>
+        <td><%= v.cajero %></td>
+        <td class="num"><%= soles(v.total) %></td>
+        <td><span class="estado estado-<%= v.estado %>"><%= v.estado %></span></td>
+        <td class="accion">
+          <a class="boton-mini" href="/comprobantes/ticket/<%= v.id %>"><%- ico('imprimir') %> Ticket</a>
+          <% if (v.estado === 'pagada') { %>
+            <form method="post" action="/reportes/anular/<%= v.id %>" data-confirmar="¿Anular esta venta? El stock se devolverá." data-confirmar-boton="Sí, anular">
+              <input type="hidden" name="fecha" value="<%= fecha %>">
+              <button class="boton-mini peligro">Anular</button>
+            </form>
+          <% } %>
+        </td>
+      </tr>
+    <% }) %>
+    </tbody>
+  </table>
+  </div>
+  <% } %>
+</section>
+
+<section>
+  <h2>Turnos</h2>
+  <% if (turnos.length === 0) { %><p class="vacio">No hubo turnos este día.</p><% } else { %>
+  <div class="tabla-marco">
+  <table class="tabla">
+    <thead><tr><th>Cajero</th><th>Apertura</th><th>Cierre</th><th class="num">Inicial</th><th class="num">Contado</th><th><span class="oculto">Acciones</span></th></tr></thead>
+    <tbody>
+    <% turnos.forEach(function (t) { %>
+      <tr>
+        <td><%= t.cajero %></td>
+        <td><%= t.abierto_en %></td>
+        <td><%= t.cerrado_en || 'Abierto' %></td>
+        <td class="num"><%= soles(t.efectivo_inicial) %></td>
+        <td class="num"><%= t.efectivo_contado === null ? '' : soles(t.efectivo_contado) %></td>
+        <td class="accion"><a class="boton-mini" href="/turno/<%= t.id %>/arqueo"><%- ico('reportes') %> Arqueo</a></td>
+      </tr>
+    <% }) %>
+    </tbody>
+  </table>
+  </div>
+  <% } %>
+</section>
+
+<section class="bloque-claro">
+  <h2><%- ico('respaldo') %> Respaldo</h2>
+  <p>Se crea uno automático al cerrar cada turno. También puedes crearlo ahora.</p>
+  <form method="post" action="/reportes/respaldo"><button class="boton-secundario"><%- ico('respaldo') %> Crear respaldo ahora</button></form>
+</section>
+<%- include('parciales/pie') %>

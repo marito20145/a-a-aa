@@ -1,0 +1,24 @@
+<% const fachada = fotoNegocio('fachada'); %>
+<div class="acceso-escena">
+  <% if (fachada) { %>
+    <img class="acceso-foto" src="<%= fachada %>" alt="Fachada de <%= config.negocio.nombre %>">
+  <% } else { %>
+    <div class="bodega">
+      <img src="/img/ilustraciones/bodega.svg" alt="" width="600" height="420">
+      <% const letrero = config.negocio.nombre.toUpperCase(); %>
+      <%# Mismo tamaño y posición que el letrero en blanco del dibujo (328 x 44 en un lienzo de 600 x 420) %>
+      <svg class="bodega-letrero" viewBox="0 0 328 44" aria-hidden="true" focusable="false">
+        <text x="164" y="30" text-anchor="middle"<% if (letrero.length > 20) { %> textLength="304" lengthAdjust="spacingAndGlyphs"<% } %>><%= letrero %></text>
+      </svg>
+    </div>
+  <% } %>
+  <div>
+    <h2>Tu bodega de confianza</h2>
+    <p>Vende rápido, cobra sin errores y cierra el día con la caja cuadrada.</p>
+  </div>
+  <ul class="acceso-puntos">
+    <li><%- ico('rayo') %> Escanea y agrega productos en un segundo</li>
+    <li><%- ico('celular') %> Cobra en efectivo, tarjeta, Yape o Plin</li>
+    <li><%- ico('check') %> Arqueo al cerrar: sabes al instante si cuadra</li>
+  </ul>
+</div>

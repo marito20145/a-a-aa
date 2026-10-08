@@ -1,0 +1,20 @@
+              MI MINIMARKET
+------------------------------------------
+BOLETA DE VENTA B001-00000002
+Fecha: 2026-10-07 18:13:12
+Cajero: admin
+Cliente: FABRIZIO ALEXANDER CARREÑO ESPINO
+DNI: 61151449
+------------------------------------------
+Arroz extra 1 kg
+  4 u x S/ 4.90                   S/ 19.60
+------------------------------------------
+Op. gravada                       S/ 16.61
+IGV 18%                            S/ 2.99
+TOTAL                             S/ 19.60
+------------------------------------------
+Efectivo                          S/ 20.00
+Vuelto                             S/ 0.40
+------------------------------------------
+Comprobante no enviado a SUNAT (prueba)
+          Gracias por su compra

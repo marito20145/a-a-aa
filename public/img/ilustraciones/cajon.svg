@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 160">
+  <!-- Caja registradora con el cajón de dinero abierto -->
+  <ellipse cx="110" cy="150" rx="96" ry="7" fill="#18211f" opacity=".1"/>
+  <rect x="46" y="14" width="128" height="72" rx="10" fill="#0f6b56"/>
+  <rect x="62" y="26" width="64" height="24" rx="4" fill="#163a33"/>
+  <text x="94" y="44" font-family="Bahnschrift, Arial, sans-serif" font-size="14" font-weight="700" text-anchor="middle" fill="#ffcf3d">S/ 0.00</text>
+  <g fill="#e3f0ea"><rect x="136" y="26" width="10" height="8" rx="2"/><rect x="150" y="26" width="10" height="8" rx="2"/><rect x="136" y="38" width="10" height="8" rx="2"/><rect x="150" y="38" width="10" height="8" rx="2"/></g>
+  <rect x="62" y="58" width="98" height="16" rx="3" fill="#0a4f40"/>
+  <path d="M24 92l12-12h148l12 12z" fill="#163a33"/>
+  <g>
+    <rect x="44" y="82" width="26" height="12" rx="2" fill="#6fae7f"/><rect x="74" y="82" width="26" height="12" rx="2" fill="#8cc49a"/>
+    <rect x="104" y="82" width="26" height="12" rx="2" fill="#6fae7f"/>
+    <circle cx="144" cy="87" r="5" fill="#ffcf3d"/><circle cx="156" cy="87" r="5" fill="#e3b11e"/><circle cx="168" cy="87" r="5" fill="#ffcf3d"/>
+  </g>
+  <rect x="20" y="92" width="180" height="50" rx="6" fill="#c08a4f"/>
+  <rect x="88" y="110" width="44" height="10" rx="5" fill="#9a6a37"/>
+</svg>

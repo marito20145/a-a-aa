@@ -1,0 +1,43 @@
+<%- include('parciales/encabezado', { titulo: 'Comprobantes' }) %>
+<header class="portada">
+  <div>
+    <p class="portada-ceja"><%- ico('comprobantes') %> SUNAT</p>
+    <h1>Comprobantes</h1>
+    <p class="portada-sub">Boletas y facturas emitidas y su estado de envío.</p>
+  </div>
+  <img class="portada-img" src="/img/ilustraciones/portada-comprobantes.svg" alt="" width="240" height="138">
+</header>
+<% if (!config.facturacion.activa) { %>
+  <p class="nota nota-aviso"><%- ico('info') %><span class="nota-texto">El envío a SUNAT todavía no está configurado: los comprobantes quedan como pendientes.</span></p>
+<% } %>
+<nav class="filtros" aria-label="Filtrar por estado">
+  <% [['', 'Todos'], ['pendiente', 'Pendientes'], ['enviado', 'Enviados'], ['rechazado', 'Rechazados'], ['anulado', 'Anulados']].forEach(function (f) { %>
+    <a href="/comprobantes<%= f[0] ? '?estado=' + f[0] : '' %>"<% if (estado === f[0]) { %> aria-current="page"<% } %>><%= f[1] %></a>
+  <% }) %>
+</nav>
+<% if (comprobantes.length === 0) { %>
+  <div class="vacio">
+    <img src="/img/ilustraciones/canasta-vacia.svg" alt="" width="136" height="102">
+    <strong>Nada por aquí</strong>
+    No hay comprobantes en esta lista.
+  </div>
+<% } else { %>
+<div class="tabla-marco">
+<table class="tabla">
+  <thead><tr><th>Comprobante</th><th>Fecha</th><th>Cliente</th><th class="num">Total</th><th>Estado</th><th><span class="oculto">Acciones</span></th></tr></thead>
+  <tbody>
+  <% comprobantes.forEach(function (c) { %>
+    <tr>
+      <td><strong><%= c.tipo === 'factura' ? 'Factura' : 'Boleta' %></strong> <%= c.codigo %></td>
+      <td><%= c.pagada_en %></td>
+      <td><%= c.cliente || '' %></td>
+      <td class="num"><%= soles(c.total) %></td>
+      <td><span class="estado estado-<%= c.estado %>"><%= c.estado %></span><% if (c.respuesta) { %> <small><%= c.respuesta %></small><% } %></td>
+      <td class="accion"><a class="boton-mini" href="/comprobantes/ticket/<%= c.venta_id %>"><%- ico('imprimir') %> Ticket</a></td>
+    </tr>
+  <% }) %>
+  </tbody>
+</table>
+</div>
+<% } %>
+<%- include('parciales/pie') %>

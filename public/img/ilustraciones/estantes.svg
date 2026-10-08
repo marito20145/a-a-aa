@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="xMidYMax slice">
+  <!-- Franja decorativa: estantes con productos genéricos -->
+  <defs>
+    <g id="g">
+      <rect x="10" y="22" width="16" height="34" rx="5" fill="#b5452f"/><rect x="14" y="14" width="8" height="10" rx="2" fill="#b5452f"/>
+      <rect x="32" y="22" width="16" height="34" rx="5" fill="#ffcf3d"/><rect x="36" y="14" width="8" height="10" rx="2" fill="#ffcf3d"/>
+      <rect x="56" y="34" width="20" height="22" rx="3" fill="#fffaf0"/><rect x="56" y="40" width="20" height="6" fill="#0f6b56"/>
+      <rect x="80" y="34" width="20" height="22" rx="3" fill="#fffaf0"/><rect x="80" y="40" width="20" height="6" fill="#b5452f"/>
+      <path d="M108 56q-6-22 6-30l2-6h20l2 6q12 8 6 30z" fill="#e8d6ac"/>
+      <rect x="152" y="24" width="36" height="32" rx="3" fill="#0f6b56"/><rect x="152" y="34" width="36" height="8" fill="#0a4f40"/>
+    </g>
+  </defs>
+  <rect x="0" y="56" width="1200" height="8" fill="#9a6a37"/>
+  <rect x="0" y="112" width="1200" height="8" fill="#9a6a37"/>
+  <use href="#g"/><use href="#g" x="200"/><use href="#g" x="400"/><use href="#g" x="600"/><use href="#g" x="800"/><use href="#g" x="1000"/>
+  <use href="#g" x="100" y="56"/><use href="#g" x="300" y="56"/><use href="#g" x="500" y="56"/><use href="#g" x="700" y="56"/><use href="#g" x="900" y="56"/><use href="#g" x="-100" y="56"/><use href="#g" x="1100" y="56"/>
+</svg>

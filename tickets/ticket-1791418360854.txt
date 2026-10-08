@@ -1,0 +1,23 @@
+              MI MINIMARKET
+------------------------------------------
+BOLETA DE VENTA B001-00000003
+Fecha: 2026-10-07 19:12:40
+Cajero: admin
+------------------------------------------
+Tomate
+  1.000 kg x S/ 3.50/kg            S/ 3.50
+Tomate
+  1.000 kg x S/ 3.50/kg            S/ 3.50
+Tomate
+  1.000 kg x S/ 3.50/kg            S/ 3.50
+Tomate
+  1.000 kg x S/ 3.50/kg            S/ 3.50
+------------------------------------------
+Op. exonerada                     S/ 14.00
+TOTAL                             S/ 14.00
+------------------------------------------
+Efectivo                          S/ 20.00
+Vuelto                             S/ 6.00
+------------------------------------------
+Comprobante no enviado a SUNAT (prueba)
+          Gracias por su compra

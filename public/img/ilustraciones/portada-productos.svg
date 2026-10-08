@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 150">
+  <!-- Mercadería: cajón de fruta, sacos, botellas y etiqueta de precio -->
+  <ellipse cx="130" cy="142" rx="118" ry="7" fill="#000" opacity=".18"/>
+  <path d="M22 140q-10-34 10-46l3-10h22l3 10q20 12 10 46z" fill="#e8d6ac"/>
+  <path d="M34 86h24" stroke="#b39b6a" stroke-width="5" stroke-linecap="round"/>
+  <rect x="30" y="110" width="34" height="14" rx="3" fill="#fffaf0"/>
+  <text x="47" y="121" font-family="Bahnschrift, Arial, sans-serif" font-size="9" font-weight="700" text-anchor="middle" fill="#0f6b56">ARROZ</text>
+  <circle cx="100" cy="86" r="12" fill="#d9573b"/><circle cx="124" cy="83" r="12" fill="#d9573b"/>
+  <circle cx="148" cy="86" r="12" fill="#b9cf45"/><circle cx="170" cy="84" r="11" fill="#b9cf45"/>
+  <circle cx="112" cy="94" r="11" fill="#c94a30"/><circle cx="158" cy="95" r="11" fill="#a9c03c"/>
+  <rect x="84" y="94" width="104" height="46" rx="4" fill="#c08a4f"/>
+  <path d="M84 108h104M84 122h104" stroke="#9a6a37" stroke-width="3"/>
+  <rect x="198" y="74" width="14" height="66" rx="5" fill="#b5452f"/><rect x="202" y="62" width="6" height="14" rx="2" fill="#b5452f"/>
+  <rect x="218" y="80" width="14" height="60" rx="5" fill="#ffcf3d"/><rect x="222" y="68" width="6" height="14" rx="2" fill="#ffcf3d"/>
+  <rect x="238" y="86" width="14" height="54" rx="5" fill="#3f9b5a"/><rect x="242" y="74" width="6" height="14" rx="2" fill="#3f9b5a"/>
+  <g transform="rotate(-12 150 40)">
+    <path d="M118 26h66v30h-66l-12-15z" fill="#ffcf3d"/>
+    <circle cx="117" cy="41" r="3.5" fill="#0e2925"/>
+    <text x="152" y="47" font-family="Bahnschrift, Arial, sans-serif" font-size="16" font-weight="700" text-anchor="middle" fill="#17211f">S/ 4.20</text>
+  </g>
+</svg>

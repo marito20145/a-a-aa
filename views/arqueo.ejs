@@ -1,0 +1,42 @@
+<%- include('parciales/encabezado', { titulo: 'Arqueo' }) %>
+<section class="angosto">
+  <div class="cabecera">
+    <h1><span class="titulo-ico"><%- ico('reportes') %></span> Arqueo del turno</h1>
+  </div>
+  <% if (diferencia === 0) { %>
+    <div class="resultado resultado-ok">
+      <img src="/img/ilustraciones/cuadra.svg" alt="" width="96" height="85">
+      <div><strong>¡Cuadra exacto!</strong>El efectivo contado coincide con lo esperado.</div>
+    </div>
+  <% } else if (diferencia !== null) { %>
+    <div class="resultado resultado-mal">
+      <img src="/img/ilustraciones/descuadre.svg" alt="" width="96" height="85">
+      <div><strong><%= diferencia > 0 ? 'Sobran ' + soles(diferencia) : 'Faltan ' + soles(-diferencia) %></strong>Revisa los pagos y el conteo del cajón.</div>
+    </div>
+  <% } %>
+  <dl class="datos">
+    <dt>Cajero</dt><dd><%= turno.cajero %></dd>
+    <dt>Apertura</dt><dd><%= turno.abierto_en %></dd>
+    <dt>Cierre</dt><dd><%= turno.cerrado_en || 'Abierto' %></dd>
+    <dt>Ventas</dt><dd><%= ventas %> por <%= soles(totalVentas) %></dd>
+    <% porMedio.forEach(function (m) { %><dt><%= nombreMedio(m.medio) %></dt><dd><%= soles(m.total) %></dd><% }) %>
+  </dl>
+  <h2>Efectivo</h2>
+  <dl class="datos">
+    <dt>Inicial</dt><dd><%= soles(turno.efectivo_inicial) %></dd>
+    <dt>Ventas en efectivo</dt><dd><%= soles(efectivoVentas) %></dd>
+    <dt>Esperado en el cajón</dt><dd><%= soles(esperado) %></dd>
+    <% if (diferencia !== null) { %>
+      <dt>Contado</dt><dd><%= soles(turno.efectivo_contado) %></dd>
+      <dt>Diferencia</dt>
+      <dd class="<%= diferencia === 0 ? 'cuadra' : 'descuadre' %>">
+        <%= diferencia === 0 ? 'Cuadra exacto' : (diferencia > 0 ? 'Sobran ' + soles(diferencia) : 'Faltan ' + soles(-diferencia)) %>
+      </dd>
+    <% } %>
+  </dl>
+  <div class="acciones">
+    <a class="boton" href="/turno"><%- ico('turno') %> Abrir un nuevo turno</a>
+    <% if (usuario.rol === 'admin') { %><a class="boton-secundario" href="/reportes"><%- ico('reportes') %> Ver reportes</a><% } %>
+  </div>
+</section>
+<%- include('parciales/pie') %>
