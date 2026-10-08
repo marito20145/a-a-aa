@@ -1,0 +1,18 @@
+{
+  "name": "caja-pos",
+  "version": "0.2.0",
+  "private": true,
+  "description": "Sistema de ventas e inventario para una caja",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "demo": "node database/demo.js"
+  },
+  "dependencies": {
+    "better-sqlite3": "^13.0.3",
+    "ejs": "^7.0.1",
+    "express": "^5.2.1",
+    "express-session": "^1.19.0"
+  }
+}
